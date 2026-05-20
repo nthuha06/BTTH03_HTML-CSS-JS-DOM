@@ -80,3 +80,47 @@ function renderStudents(){
 }
 
 renderStudents();
+
+openModalBtn.onclick = function(){
+
+    studentModal.style.display = "flex";
+
+}
+
+closeModalBtn.onclick = function(){
+
+    studentModal.style.display = "none";
+
+}
+
+studentForm.addEventListener("submit", function(e){
+
+    e.preventDefault();
+
+    const student = {
+
+        id: document.getElementById("studentId").value,
+
+        name: document.getElementById("fullName").value,
+
+        birth: document.getElementById("birthDate").value,
+
+        className:
+            document.getElementById("className").value,
+
+        score:
+            document.getElementById("averageScore").value,
+
+        email:
+            document.getElementById("email").value
+    };
+
+    students.push(student);
+
+    renderStudents();
+
+    studentForm.reset();
+
+    studentModal.style.display = "none";
+
+});
