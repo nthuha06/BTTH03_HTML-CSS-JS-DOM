@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quản lý sinh viên</title>
+
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <div class="container">
+
+        <h1>HỆ THỐNG QUẢN LÝ SINH VIÊN</h1>
+
+        <div id="message"></div>
+
+        <div class="top-bar">
+            <button id="openModalBtn">
+                + Thêm sinh viên
+            </button>
+        </div>
+
+        <div class="statistics">
+
+            <p>
+                Tổng số sinh viên:
+                <span id="totalStudents">0</span>
+            </p>
+
+            <p>
+                Điểm trung bình:
+                <span id="avgScore">0</span>
+            </p>
+
+        </div>
+
+        <table>
+
+            <thead>
+                <tr>
+                    <th>Mã SV</th>
+                    <th>Họ tên</th>
+                    <th>Ngày sinh</th>
+                    <th>Lớp</th>
+                    <th>Điểm TB</th>
+                    <th>Email</th>
+                    <th>Hành động</th>
+                </tr>
+            </thead>
+
+            <tbody id="studentTableBody">
+
+            </tbody>
+
+        </table>
+
+    </div>
+
+    <div class="modal" id="studentModal">
+
+        <div class="modal-content">
+
+            <div class="modal-header">
+
+                <h2 id="modalTitle">
+                    Thêm sinh viên
+                </h2>
+
+                <button id="closeModalBtn">
+                    X
+                </button>
+
+            </div>
+
+            <form id="studentForm">
+
+                <input
+                    type="text"
+                    id="studentId"
+                    placeholder="Mã sinh viên"
+                    required
+                >
+
+                <input
+                    type="text"
+                    id="fullName"
+                    placeholder="Họ và tên"
+                    required
+                >
+
+                <input
+                    type="date"
+                    id="birthDate"
+                    required
+                >
+
+                <input
+                    type="text"
+                    id="className"
+                    placeholder="Lớp học"
+                    required
+                >
+
+                <input
+                    type="number"
+                    id="averageScore"
+                    placeholder="Điểm trung bình"
+                    min="0"
+                    max="10"
+                    step="0.1"
+                    required
+                >
+
+                <input
+                    type="email"
+                    id="email"
+                    placeholder="Email"
+                    required
+                >
+
+                <button type="submit" id="submitBtn">
+                    Lưu sinh viên
+                </button>
+
+            </form>
+
+        </div>
+
+    </div>
+
+    <script src="app.js"></script>
+
+</body>
+</html>
