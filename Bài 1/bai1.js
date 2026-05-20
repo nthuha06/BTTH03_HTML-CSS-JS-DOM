@@ -18,3 +18,65 @@ const totalStudents =
 
 const avgScore =
     document.getElementById("avgScore");
+
+function renderStudents(){
+
+    studentTableBody.innerHTML = "";
+
+    if(students.length === 0){
+
+        studentTableBody.innerHTML = `
+            <tr>
+                <td colspan="7">
+                    Chưa có sinh viên nào
+                </td>
+            </tr>
+        `;
+
+        return;
+    }
+
+    students.forEach((student, index) => {
+
+        studentTableBody.innerHTML += `
+            <tr>
+
+                <td>${student.id}</td>
+
+                <td>${student.name}</td>
+
+                <td>${student.birth}</td>
+
+                <td>${student.className}</td>
+
+                <td>${student.score}</td>
+
+                <td>${student.email}</td>
+
+                <td>
+
+                    <button
+                        class="edit-btn"
+                        onclick="editStudent(${index})">
+
+                        Sửa
+
+                    </button>
+
+                    <button
+                        class="delete-btn"
+                        onclick="deleteStudent(${index})">
+
+                        Xóa
+
+                    </button>
+
+                </td>
+
+            </tr>
+        `;
+    });
+
+}
+
+renderStudents();
