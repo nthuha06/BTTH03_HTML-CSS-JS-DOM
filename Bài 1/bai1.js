@@ -1,141 +1,478 @@
-let students = JSON.parse(localStorage.getItem("students")) || [];
+const openModalBtn =
+  document.getElementById("openModalBtn");
 
-let editIndex = -1;
+const closeModalBtn =
+  document.getElementById("closeModalBtn");
 
-const openModalBtn = document.getElementById("openModalBtn");
+const studentModal =
+  document.getElementById("studentModal");
 
-const closeModalBtn = document.getElementById("closeModalBtn");
-
-const studentModal = document.getElementById("studentModal");
-
-const studentForm = document.getElementById("studentForm");
+const studentForm =
+  document.getElementById("studentForm");
 
 const studentTableBody =
-    document.getElementById("studentTableBody");
+  document.getElementById("studentTableBody");
+
+const message =
+  document.getElementById("message");
 
 const totalStudents =
-    document.getElementById("totalStudents");
+  document.getElementById("totalStudents");
 
-const avgScore =
-    document.getElementById("avgScore");
+const averageScore =
+  document.getElementById("averageScore");
+
+const studentIdInput =
+  document.getElementById("studentId");
+
+const fullNameInput =
+  document.getElementById("fullName");
+
+const birthDateInput =
+  document.getElementById("birthDate");
+
+const classNameInput =
+  document.getElementById("className");
+
+const averageInput =
+  document.getElementById("average");
+
+const emailInput =
+  document.getElementById("email");
+
+const passwordInput =
+  document.getElementById("password");
+
+const confirmPasswordInput =
+  document.getElementById("confirmPassword");
+
+const studentIdError =
+  document.getElementById("studentIdError");
+
+const fullNameError =
+  document.getElementById("fullNameError");
+
+const birthDateError =
+  document.getElementById("birthDateError");
+
+const classNameError =
+  document.getElementById("classNameError");
+
+const averageError =
+  document.getElementById("averageError");
+
+const emailError =
+  document.getElementById("emailError");
+
+const passwordError =
+  document.getElementById("passwordError");
+
+const confirmPasswordError =
+  document.getElementById("confirmPasswordError");
+
+let students =
+  JSON.parse(localStorage.getItem("students"))
+  || [];
+
+let editId = null;
+
+openModalBtn.addEventListener("click", () => {
+
+  studentModal.classList.remove("hidden");
+});
+
+closeModalBtn.addEventListener("click", () => {
+
+  closeModal();
+});
+
+function closeModal(){
+
+  studentModal.classList.add("hidden");
+
+  studentForm.reset();
+
+  clearErrors();
+
+  editId = null;
+}
+
+function clearErrors(){
+
+  studentIdError.textContent = "";
+  fullNameError.textContent = "";
+  birthDateError.textContent = "";
+  classNameError.textContent = "";
+  averageError.textContent = "";
+  emailError.textContent = "";
+  passwordError.textContent = "";
+  confirmPasswordError.textContent = "";
+}
+
+function saveStudents(){
+
+  localStorage.setItem(
+    "students",
+    JSON.stringify(students)
+  );
+}
+
+function showMessage(text){
+
+  message.textContent = text;
+
+  setTimeout(() => {
+
+    message.textContent = "";
+
+  }, 2000);
+}
+
+function updateStatistics(){
+
+  totalStudents.textContent =
+    students.length;
+
+  if(students.length === 0){
+
+    averageScore.textContent = 0;
+
+    return;
+  }
+
+  const total =
+    students.reduce((sum, student) => {
+
+      return sum + Number(student.average);
+
+    }, 0);
+
+  averageScore.textContent =
+    (total / students.length).toFixed(2);
+}
 
 function renderStudents(){
 
-    studentTableBody.innerHTML = "";
+  studentTableBody.innerHTML = "";
 
-    if(students.length === 0){
+  if(students.length === 0){
 
-        studentTableBody.innerHTML = `
-            <tr>
-                <td colspan="7">
-                    Chưa có sinh viên nào
-                </td>
-            </tr>
-        `;
+    studentTableBody.innerHTML = `
+      <tr>
+        <td colspan="7">
+          Chưa có sinh viên nào
+        </td>
+      </tr>
+    `;
 
-        return;
-    }
+    updateStatistics();
 
-    students.forEach((student, index) => {
+    return;
+  }
 
-        studentTableBody.innerHTML += `
-            <tr>
+  students.forEach(student => {
 
-                <td>${student.id}</td>
+    const row =
+      document.createElement("tr");
 
-                <td>${student.name}</td>
+    row.innerHTML = `
+      <td>${student.studentId}</td>
+      <td>${student.fullName}</td>
+      <td>${student.birthDate}</td>
+      <td>${student.className}</td>
+      <td>${student.average}</td>
+      <td>${student.email}</td>
 
-                <td>${formatDate(student.birth)}</td>
+      <td>
 
-                <td>${student.className}</td>
+        <div class="actions">
 
-                <td>${student.score}</td>
+          <button
+            class="edit-btn"
+            onclick="editStudent(${student.id})"
+          >
+            Sửa
+          </button>
 
-                <td>${student.email}</td>
+          <button
+            class="delete-btn"
+            onclick="deleteStudent(${student.id})"
+          >
+            Xóa
+          </button>
 
-                <td>
+        </div>
 
-                    <button
-                        class="edit-btn"
-                        onclick="editStudent(${index})">
+      </td>
+    `;
 
-                        Sửa
+    studentTableBody.appendChild(row);
 
-                    </button>
+  });
 
-                    <button
-                        class="delete-btn"
-                        onclick="deleteStudent(${index})">
-
-                        Xóa
-
-                    </button>
-
-                </td>
-
-            </tr>
-        `;
-    });
-
+  updateStatistics();
 }
 
-function formatDate(dateString){
+function validateForm(){
 
-    const date = new Date(dateString);
+  clearErrors();
 
-    const day =
-        String(date.getDate()).padStart(2, "0");
+  let isValid = true;
 
-    const month =
-        String(date.getMonth() + 1).padStart(2, "0");
+  const studentIdPattern =
+    /^SV\d{3,}$/;
 
-    const year = date.getFullYear();
+  if(studentIdInput.value.trim() === ""){
 
-    return `${day}/${month}/${year}`;
+    studentIdError.textContent =
+      "Vui lòng nhập mã sinh viên";
+
+    isValid = false;
+
+  }else if(
+    !studentIdPattern.test(
+      studentIdInput.value
+    )
+  ){
+
+    studentIdError.textContent =
+      "Mã SV phải dạng SV001";
+
+    isValid = false;
+  }
+
+  if(fullNameInput.value.trim() === ""){
+
+    fullNameError.textContent =
+      "Vui lòng nhập họ tên";
+
+    isValid = false;
+
+  }else if(
+    fullNameInput.value.trim().length < 5
+  ){
+
+    fullNameError.textContent =
+      "Họ tên tối thiểu 5 ký tự";
+
+    isValid = false;
+  }
+
+  if(birthDateInput.value === ""){
+
+    birthDateError.textContent =
+      "Vui lòng chọn ngày sinh";
+
+    isValid = false;
+  }
+
+  if(classNameInput.value.trim() === ""){
+
+    classNameError.textContent =
+      "Vui lòng nhập lớp";
+
+    isValid = false;
+  }
+
+  if(averageInput.value === ""){
+
+    averageError.textContent =
+      "Vui lòng nhập điểm";
+
+    isValid = false;
+
+  }else if(
+    averageInput.value < 0 ||
+    averageInput.value > 10
+  ){
+
+    averageError.textContent =
+      "Điểm từ 0 đến 10";
+
+    isValid = false;
+  }
+
+  const emailPattern =
+    /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+  if(emailInput.value.trim() === ""){
+
+    emailError.textContent =
+      "Vui lòng nhập email";
+
+    isValid = false;
+
+  }else if(
+    !emailPattern.test(
+      emailInput.value
+    )
+  ){
+
+    emailError.textContent =
+      "Email không hợp lệ";
+
+    isValid = false;
+  }
+
+  if(passwordInput.value.trim() === ""){
+
+    passwordError.textContent =
+      "Vui lòng nhập mật khẩu";
+
+    isValid = false;
+
+  }else if(
+    passwordInput.value.length < 6
+  ){
+
+    passwordError.textContent =
+      "Mật khẩu tối thiểu 6 ký tự";
+
+    isValid = false;
+  }
+
+  if(confirmPasswordInput.value.trim() === ""){
+
+    confirmPasswordError.textContent =
+      "Vui lòng xác nhận mật khẩu";
+
+    isValid = false;
+
+  }else if(
+    confirmPasswordInput.value !==
+    passwordInput.value
+  ){
+
+    confirmPasswordError.textContent =
+      "Mật khẩu không khớp";
+
+    isValid = false;
+  }
+
+  return isValid;
 }
 
-renderStudents();
+studentForm.addEventListener("submit", (e) => {
 
-openModalBtn.onclick = function(){
+  e.preventDefault();
 
-    studentModal.style.display = "flex";
+  if(!validateForm()){
+    return;
+  }
 
+  const studentData = {
+
+    id: editId || Date.now(),
+
+    studentId:
+      studentIdInput.value,
+
+    fullName:
+      fullNameInput.value,
+
+    birthDate:
+      birthDateInput.value,
+
+    className:
+      classNameInput.value,
+
+    average:
+      averageInput.value,
+
+    email:
+      emailInput.value,
+
+    password:
+      passwordInput.value
+  };
+
+  if(editId){
+
+    students = students.map(student =>
+
+      student.id === editId
+        ? {
+            ...student,
+            ...studentData
+          }
+        : student
+    );
+
+    showMessage(
+      "Cập nhật thành công"
+    );
+
+  }else{
+
+    students.push(studentData);
+
+    showMessage(
+      "Thêm sinh viên thành công"
+    );
+  }
+
+  saveStudents();
+
+  renderStudents();
+
+  closeModal();
+});
+
+function editStudent(id){
+
+  const student = students.find(
+    student => student.id === id
+  );
+
+  studentIdInput.value =
+    student.studentId;
+
+  fullNameInput.value =
+    student.fullName;
+
+  birthDateInput.value =
+    student.birthDate;
+
+  classNameInput.value =
+    student.className;
+
+  averageInput.value =
+    student.average;
+
+  emailInput.value =
+    student.email;
+
+  passwordInput.value =
+    student.password;
+
+  confirmPasswordInput.value =
+    student.password;
+
+  editId = id;
+
+  studentModal.classList.remove("hidden");
 }
 
-closeModalBtn.onclick = function(){
+function deleteStudent(id){
 
-    studentModal.style.display = "none";
+  const confirmDelete = confirm(
+    "Bạn có chắc muốn xóa?"
+  );
 
-}
+  if(confirmDelete){
 
-studentForm.addEventListener("submit", function(e){
+    students = students.filter(
+      student => student.id !== id
+    );
 
-    e.preventDefault();
-
-    const student = {
-
-        id: document.getElementById("studentId").value,
-
-        name: document.getElementById("fullName").value,
-
-        birth: document.getElementById("birthDate").value,
-
-        className:
-            document.getElementById("className").value,
-
-        score:
-            document.getElementById("averageScore").value,
-
-        email:
-            document.getElementById("email").value
-    };
-
-    students.push(student);
+    saveStudents();
 
     renderStudents();
 
-    studentForm.reset();
+    showMessage(
+      "Xóa thành công"
+    );
+  }
+}
 
-    studentModal.style.display = "none";
-
-});
+renderStudents();
