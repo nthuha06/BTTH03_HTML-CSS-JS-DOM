@@ -2,33 +2,31 @@
   margin:0;
   padding:0;
   box-sizing:border-box;
-  font-family:Arial;
+  font-family:Arial, sans-serif;
 }
 
 body{
-  background:#f5f5f5;
+  background:#f4f4f4;
   padding:30px;
 }
 
 .container{
-  max-width:900px;
+  max-width:1000px;
   margin:auto;
 }
 
 h1{
   margin-bottom:20px;
-}
-
-button{
-  cursor:pointer;
+  color:#333;
 }
 
 #openModalBtn{
-  padding:12px 20px;
-  border:none;
   background:#007bff;
   color:white;
+  border:none;
+  padding:12px 20px;
   border-radius:8px;
+  cursor:pointer;
   margin-bottom:20px;
 }
 
@@ -38,22 +36,27 @@ button{
   margin-bottom:20px;
 }
 
-.summary p{
-  background:white;
-  padding:15px;
-  border-radius:10px;
+.summary-box{
   flex:1;
+  background:white;
+  padding:20px;
+  border-radius:10px;
+  box-shadow:0 2px 5px rgba(0,0,0,0.1);
+}
+
+.summary-box h3{
+  margin-bottom:10px;
 }
 
 #message{
   margin-bottom:20px;
-  color:green;
   font-weight:bold;
+  color:green;
 }
 
 #taskList{
   display:grid;
-  grid-template-columns:repeat(auto-fill,minmax(280px,1fr));
+  grid-template-columns:repeat(auto-fill, minmax(300px, 1fr));
   gap:20px;
 }
 
@@ -80,31 +83,27 @@ button{
 .actions{
   display:flex;
   gap:10px;
-  margin-top:10px;
+  margin-top:15px;
 }
 
-.edit-btn{
-  background:orange;
+.actions button{
   border:none;
-  padding:8px 12px;
-  color:white;
+  padding:10px;
   border-radius:6px;
-}
-
-.delete-btn{
-  background:red;
-  border:none;
-  padding:8px 12px;
   color:white;
-  border-radius:6px;
+  cursor:pointer;
 }
 
 .status-btn{
   background:green;
-  border:none;
-  padding:8px 12px;
-  color:white;
-  border-radius:6px;
+}
+
+.edit-btn{
+  background:orange;
+}
+
+.delete-btn{
+  background:red;
 }
 
 .modal{
@@ -123,7 +122,7 @@ button{
 .modal-content{
   background:white;
   width:400px;
-  padding:20px;
+  padding:25px;
   border-radius:12px;
   position:relative;
 }
@@ -132,7 +131,7 @@ button{
   position:absolute;
   top:10px;
   right:15px;
-  font-size:24px;
+  font-size:25px;
   cursor:pointer;
 }
 
@@ -146,15 +145,29 @@ form{
 input,
 textarea,
 select{
+  width:100%;
   padding:12px;
   border:1px solid #ccc;
   border-radius:8px;
 }
 
+textarea{
+  resize:none;
+  height:100px;
+}
+
 form button{
-  padding:12px;
   background:#007bff;
   color:white;
   border:none;
+  padding:12px;
   border-radius:8px;
+  cursor:pointer;
+}
+
+.error{
+  color:red;
+  font-size:14px;
+  margin-top:5px;
+  display:block;
 }
