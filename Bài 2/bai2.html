@@ -4,20 +4,37 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Quản lý công việc</title>
-  <link rel="stylesheet" href="style.css">
+
+  <link rel="stylesheet" href="bai2.css">
 </head>
+
 <body>
 
   <div class="container">
 
     <h1>Quản lý công việc cá nhân</h1>
 
-    <button id="openModalBtn">+ Thêm công việc</button>
+    <button id="openModalBtn">
+      + Thêm công việc
+    </button>
 
     <div class="summary">
-      <p>Tổng công việc: <span id="totalTasks">0</span></p>
-      <p>Đã hoàn thành: <span id="completedTasks">0</span></p>
-      <p>Chưa hoàn thành: <span id="pendingTasks">0</span></p>
+
+      <div class="summary-box">
+        <h3>Tổng công việc</h3>
+        <p id="totalTasks">0</p>
+      </div>
+
+      <div class="summary-box">
+        <h3>Đã hoàn thành</h3>
+        <p id="completedTasks">0</p>
+      </div>
+
+      <div class="summary-box">
+        <h3>Chưa hoàn thành</h3>
+        <p id="pendingTasks">0</p>
+      </div>
+
     </div>
 
     <div id="message"></div>
@@ -30,25 +47,50 @@
 
     <div class="modal-content">
 
-      <span class="close-btn" id="closeModalBtn">&times;</span>
+      <span class="close-btn" id="closeModalBtn">
+        &times;
+      </span>
 
-      <h2 id="modalTitle">Thêm công việc</h2>
+      <h2 id="modalTitle">
+        Thêm công việc
+      </h2>
 
       <form id="taskForm">
 
-        <input type="text" id="title" placeholder="Tiêu đề">
+        <div>
+          <input
+            type="text"
+            id="title"
+            placeholder="Tiêu đề công việc"
+          >
 
-        <textarea id="description" placeholder="Mô tả"></textarea>
+          <small class="error" id="titleError"></small>
+        </div>
 
-        <input type="date" id="deadline">
+        <div>
+          <textarea
+            id="description"
+            placeholder="Mô tả công việc"
+          ></textarea>
+        </div>
 
-        <select id="priority">
-          <option value="Thấp">Thấp</option>
-          <option value="Trung bình">Trung bình</option>
-          <option value="Cao">Cao</option>
-        </select>
+        <div>
+          <input type="date" id="deadline">
 
-        <button type="submit">Lưu công việc</button>
+          <small class="error" id="deadlineError"></small>
+        </div>
+
+        <div>
+          <select id="priority">
+            <option value="Thấp">Thấp</option>
+            <option value="Trung bình">Trung bình</option>
+            <option value="Cao">Cao</option>
+          </select>
+        </div>
+
+        <button type="submit">
+          Lưu công việc
+        </button>
 
       </form>
 
@@ -56,7 +98,7 @@
 
   </div>
 
-  <script src="app.js"></script>
+  <script src="bai2.js"></script>
 
 </body>
 </html>
